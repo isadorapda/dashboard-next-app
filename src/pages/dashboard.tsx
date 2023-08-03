@@ -4,6 +4,8 @@ import dynamic from 'next/dynamic'
 import { ApexOptions } from 'apexcharts'
 import { Header } from '../components/Header'
 import { Sidebar } from '../components/Sidebar'
+import { getSession, useSession } from 'next-auth/react'
+import { GetServerSideProps } from 'next/types'
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
@@ -62,7 +64,10 @@ const series = [
 ]
 
 export default function Dashboard() {
+  const { data: session } = useSession()
   const [showChart, setShowChart] = useState(false)
+
+  console.log('SESS', session)
 
   useEffect(() => {
     setShowChart(true)
@@ -109,4 +114,14 @@ export default function Dashboard() {
       </Flex>
     </Flex>
   )
+}
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req })
+  if (!session) {
+    return { redirect: { permanent: false, destination: '/' } }
+  }
+
+  return {
+    props: { session: session },
+  }
 }
