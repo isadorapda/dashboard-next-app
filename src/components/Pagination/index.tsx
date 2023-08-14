@@ -20,7 +20,7 @@ function generatePagesArray(from: number, to: number) {
 
 export function Pagination({
   totalCount,
-  limit = 10,
+  limit = 5,
   currentPage = 1,
   onPageChange,
 }: PaginationProps) {
@@ -38,7 +38,7 @@ export function Pagination({
           Math.min(currentPage + siblingsCount, totalPages)
         )
       : []
-
+  const offset = (currentPage - 1) * limit
   return (
     <Stack
       direction={['column', 'row']}
@@ -48,7 +48,9 @@ export function Pagination({
       align="center"
     >
       <Box>
-        <strong>0 - 10 of 100</strong>
+        <strong>
+          {offset} - {offset + limit} of {totalCount}
+        </strong>
       </Box>
       <HStack spacing="2">
         {currentPage > 1 + siblingsCount && (
