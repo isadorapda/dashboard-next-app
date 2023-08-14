@@ -20,6 +20,7 @@ export function SidebarDrawerProvider({
 
   useEffect(() => {
     disclosure.onClose()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [path])
 
   return (
